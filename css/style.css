@@ -1,0 +1,74 @@
+body {
+	margin: 0 auto;
+	xdisplay: none;
+  overflow-x: hidden;
+}
+div.ui-widget-overlay {
+	max-width: 99999px !important;
+}
+select, input, button {
+	font-size: 25px;
+	margin: 5px 0 0 0 !important;
+}
+input {
+	border-width: 1px;
+	padding: 5px;
+}
+fieldset {
+  border-width: 1px;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+#header, #content, #footer {
+  display: none;
+}
+button.addbutton, button.deletebutton {
+  margin-right: 5px !important;
+}
+div.ui-dialog-buttonpane button {
+	width: auto;
+}
+textarea {
+  height: 10em;
+	overflow: auto;
+	resize: none;
+	padding: 2px;
+}
+div.ui-dialog-content {
+	overflow: hidden !important;
+  text-align: center;
+}
+#loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #ff0;
+	color: #333;
+	width: 100%;
+  text-align: center;
+}
+#error {
+	background-color: #f33;
+	text-align: center;
+	width: 100%;
+  display: none;
+}
+#message {
+	background-color: #3f3;
+	text-align: center;
+	width: 100%;
+  display: none;
+}
+#offline {
+	color: #f00;
+	display: inline;
+}
+#online {
+	color: #0f0;
+	display: inline;
+}
+#settings {
+	margin-left: 4px !important;
+}
