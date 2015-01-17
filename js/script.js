@@ -588,166 +588,6 @@ $(function () {//***********start doc ready***************
 					width: dialogwidth
 				});
 		$("#settingsdialog button").button();
-		/*$("#exportbackup").click(function(){
-		 $("<div id='exportbackupdialog'>" +
-		 "<input type='password' style='width: " + (maxwidth - 67) + "px;' id='password' />" +
-		 "</div>")
-		 .dialog({
-		 buttons: {
-		 "Export/Backup": function(){
-		 var dlg = this;
-		 db.transaction(function (tx) {
-		 tx.executeSql('SELECT password FROM users WHERE id = ?', [uid], function(tx, results){
-		 if ($("#exportbackup #password").val() === decrypt(results.rows.item(0).password)) {
-		 tx.executeSql('SELECT urls.id AS urlid, usernames.id AS usernameid, passwords.id AS passwordid, url, notes, username, password FROM urls LEFT JOIN usernames ON urls.id = usernames.urlid LEFT JOIN passwords ON usernames.id = passwords.usernameid WHERE urls.userid = ? ORDER BY urlid, usernameid, passwordid', [uid], function(tx, results){
-		 var xmlDoc = "<r>";
-		 var urlid = usernameid = null;
-		 for(var i = 0; i < results.rows.length; i++)
-		 {
-		 if (results.rows.item(i).urlid != urlid) {
-		 if (urlid != null) {
-		 if (usernameid != null) {
-		 xmlDoc += "</n>";
-		 }
-		 xmlDoc += "</u>";
-		 usernameid = null;
-		 }
-		 urlid = results.rows.item(i).urlid;
-		 xmlDoc += "<u t='" + decrypt(results.rows.item(i).url) + "' z='" + decrypt(results.rows.item(0).notes) + "'>";
-		 }
-		 if (results.rows.item(i).usernameid != usernameid) {
-		 if (usernameid != null) {
-		 xmlDoc += "</n>";
-		 }
-		 if (results.rows.item(i).usernameid != null) {
-		 usernameid = results.rows.item(i).usernameid;
-		 xmlDoc += "<n t='" + decrypt(results.rows.item(i).username) + "'>";
-		 }
-		 }
-		 if (results.rows.item(i).passwordid != null) {
-		 xmlDoc += "<p t='" + decrypt(results.rows.item(i).password) + "' />";
-		 }
-		 }
-		 if (usernameid != null) {
-		 xmlDoc += "</n>";
-		 }
-		 if (urlid != null) {
-		 xmlDoc += "</u>";
-		 }
-		 xmlDoc += "</r>";
-		 window.open("backup.php?pws=" + encrypt(xmlDoc, $("#exportbackup #password").val()))////
-		 }, function(tx, err)
-		 {
-		 error(err.message);
-		 });
-		 $(dlg).dialog("close");
-		 } else {
-		 error("Invalid Password");
-		 }
-		 }, function(tx, err){
-		 error(err.message);
-		 });
-		 });
-		 },
-		 "Cancel": function() { $(this).dialog("close"); }
-		 },
-		 close: function(event, ui){ $(this).remove(); },
-		 closeOnEscape: false,
-		 draggable: true,
-		 height: "auto",
-		 modal: true,
-		 position: ['center', documentTop],
-		 resizable: false,
-		 title: "Export/Backup Passwords",
-		 width: dialogwidth
-		 });
-		 $("#exportbackupdialog input[type='password']").keydown(function(event){
-		 if (event.which === 13) { 
-		 $("div.ui-dialog-buttonset button")[0].click();
-		 }
-		 });
-		 });
-		 $("#importrestore").click(function(){
-		 $("<div id='importrestoredialog'>" +
-		 "<input type='password' style='width: " + (maxwidth - 67) + "px;' id='password' />" +
-		 "</div>")
-		 .dialog({
-		 buttons: {
-		 "Import/Restore": function(){
-		 ////
-		 },
-		 "Cancel": function() { $(this).dialog("close"); }
-		 },
-		 close: function(event, ui){ $(this).remove(); },
-		 closeOnEscape: false,
-		 draggable: true,
-		 height: "auto",
-		 modal: true,
-		 position: ['center', documentTop],
-		 resizable: false,
-		 title: "Import/Restore Passwords",
-		 width: dialogwidth
-		 });
-		 $("#importrestoredialog input[type='password']").keydown(function(event){
-		 if (event.which === 13) { 
-		 $("div.ui-dialog-buttonset button")[0].click();
-		 }
-		 });
-		 });
-		 
-		 $("#uploadtoserver").click(function () {
-		 $("<div id='uploadtoserverdialog'>" +
-		 "<div>Your passwords will be uploaded to the server and you will be given a code. That code can download the passwords one time. Your username and password must be the same when you download the passwords as when you upload the passwords.</div>" +
-		 "<button type='button' style='" + (maxwidth - 67) + "' id='sync'>Sync</button><br />" +
-		 "<input type='text' style='width: " + (maxwidth - 67) + "px;' id='syncid' readonly='readonly' />" +
-		 "</div>")
-		 .dialog({
-		 buttons: {
-		 "Upload": function () {
-		 var dlg = this;
-		 db.transaction(function (tx) {
-		 tx.executeSql('SELECT password FROM users WHERE id = ?', [uid], function (tx, results) {
-		 if ($("#changeusernamedialog #password").val() === decrypt(results.rows.item(0).password)) {
-		 tx.executeSql('SELECT id FROM users WHERE username = ?', [$("#changeusernamedialog #username").val()], function (tx, results) {
-		 if (results.rows.length === 0) {
-		 tx.executeSql('UPDATE users SET username = ?, key = ? WHERE id = ?', [$("#changeusernamedialog #username").val(), encrypt(key, $("#changeusernamedialog #username").val() + $("#changeusernamedialog #password").val()), uid]);
-		 $(dlg).dialog("close");
-		 }
-		 else if (results.rows.item(0).id === uid) {
-		 $(dlg).dialog("close");
-		 } else {
-		 error("Username already exists.");
-		 $("#changeusernamedialog #username").val("").focus();
-		 }
-		 }, function (tx, err) {
-		 error(err.message);
-		 });
-		 } else {
-		 error("Invalid Password");
-		 $("#changeusernamedialog #password").val("").focus();
-		 }
-		 }, function (tx, err) {
-		 error(err.message);
-		 });
-		 });
-		 },
-		 "Cancel": function () {
-		 $(this).dialog("close");
-		 }
-		 },
-		 close: function (event, ui) {
-		 $(this).remove();
-		 },
-		 closeOnEscape: false,
-		 draggable: true,
-		 height: "auto",
-		 modal: true,
-		 position: ['center', documentTop],
-		 resizable: false,
-		 title: "Change Username",
-		 width: dialogwidth
-		 });
-		 });*/
 		$("#changeusername").click(function () {
 			$("<div id='changeusernamedialog'>" +
 					"<input type='password' style='width: " + (maxwidth - 67) + "px;' placeholder='Enter Your Password' id='password' />" +
@@ -980,7 +820,7 @@ function getTimeIdle()
 {
 	var cdTime = $.idleTimeout.options.idleAfter + $.idleTimeout.options.warningLength - Math.floor($.idleTimer("getElapsedTime") / 1000);
 	if (cdTime < 0) {
-		location.href = "/pws/";
+		location.reload();
 	} else {
 		$("#idleTimerCD").text(Math.floor(cdTime / 60) + ":" + ((cdTime % 60 < 10) ? "0" : "") + (cdTime % 60));
 	}
@@ -1037,7 +877,7 @@ function showLogin()
 							},
 							onTimeout: function ()
 							{
-								location.href = "/pws/";
+								location.reload();
 							},
 							onIdle: function () {
 								$("#idleTimerCD").css("display", "none");
