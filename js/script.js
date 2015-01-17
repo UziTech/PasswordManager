@@ -1,6 +1,12 @@
 /*if (top.location.href != location.href) {
  top.location.href = location.href;
  }*/
+addToHomescreen({
+	skipFirstVisit: true,
+	lifespan: 10,
+	maxDisplayCount: 2
+});
+ 
 var count = 0;
 var cdtimer, dialogwidth, db, uid, maxwidth;
 var showhideCount = 5;
@@ -728,9 +734,6 @@ $(function () {//***********start doc ready***************
 	$("#logout").click(function () {
 		location.reload();
 	});
-//	if (!navigator.onLine) {
-//		$("#online").html("Offline").attr("id", "offline");
-//	}
 	$("div[data-href]").click(function () {
 		location.href = $(this).attr("data-href");
 	});
